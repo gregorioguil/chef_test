@@ -1,0 +1,32 @@
+driver:
+  name: ssh
+  hostname: 165.227.65.111
+  port: 22
+  username: root
+  ssh_key: /home/gregorio/.ssh/id_rsa
+
+provisioner:
+  name: chef_zero
+  always_update_cookbooks: true
+
+transport:
+  compression: none
+
+
+
+platforms:
+  - name: ubuntu-16.04
+    driver_config:
+      customize:
+        memory: 1024
+suites:
+  - name: gregorio_receita
+    data_bags_path: test/fixtures/default/data_bags
+    sudo: true
+    run_list:
+      - recipe[lamp::default]
+    verifier:
+      inspec_tests:
+        - test/smoke/default
+    attributes:
+      default: default
